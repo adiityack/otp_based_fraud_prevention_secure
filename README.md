@@ -2,7 +2,9 @@
 
 This project provides a secure OTP-based validation system to protect users from fraudulent activities, such as phishing attacks or unauthorized transactions. By integrating Twilio's messaging API and Firebase Firestore, this system helps send OTPs through SMS and verifies them before processing sensitive actions like payments.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Report Image](https://github.com/adiityack/otp_based_fraud_prevention_secure/blob/master/working.png)
+
+![Report Image](https://github.com/adiityack/otp_based_fraud_prevention_secure/blob/master/report.png)
 
 ## Available Scripts
 
@@ -14,24 +16,19 @@ Runs the app in development mode. Open [http://localhost:3000](http://localhost:
 
 The page will reload if you make edits. You will also see any lint errors in the console.
 
-### `npm test`
+### `node server.js`
 
-Launches the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Open new terminal and run this to run the backend part of the project, but before running the project make sure you have installed all
+the dependencies by using ( npm i ) or (npm install) and also make sure you have setup firebase and Twilio before running whole project.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder. It bundles React in production mode and optimizes the build for the best performance.
-
-### `npm run eject`
-
-**Note:** This is a one-way operation. Once you eject, you can’t go back!
 
 ## Firebase Setup
 
 To set up Firebase Firestore, follow these steps:
 
 1. Go to the [Firebase Console](https://console.firebase.google.com/) and create a new project.
-2. Set up Firestore Database in the project.
+2. Set up the Firestore Database in the project.
 3. Create a `firebaseConfig.js` file in your project directory and paste your Firebase configuration:
 
    ```js
