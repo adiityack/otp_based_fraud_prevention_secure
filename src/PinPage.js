@@ -414,7 +414,7 @@ const PinPage = () => {
       setErrors(validationErrors);
     } else {
       const dist = distance(lat1, long1, lat2, long2);
-      const isSuccess = dist <= 50 && Number(otpInput) === Number(getOtp);
+      const isSuccess = dist <= 0.5 && Number(otpInput) === Number(getOtp);
       console.log("Get OTP: ", getOtp);
       alert(`Fetched OTP: ${getOtp}\nEntered OTP: ${otpInput}\nDistance: ${dist.toFixed(2)} km`);
       navigate('/result', { state: { isSuccess, cardNumber } });
