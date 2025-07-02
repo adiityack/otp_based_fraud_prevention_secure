@@ -1,115 +1,52 @@
-# OTP (One-Time Password) scam ! PREVENTION !
+# OTP (One-Time Password) scam !
 
-This project provides a secure OTP-based validation system to protect users from fraudulent activities, such as phishing attacks or unauthorized transactions. By integrating Twilio's messaging API and Firebase Firestore, this system helps send OTPs through SMS and verifies them before processing sensitive actions like payments.
+This project is the outcome of in-depth research into OTP-based fraud in India, particularly in remote and high-risk regions. It addresses how fraudsters exploit user behavior, location blind spots, and social engineering tactics to bypass traditional OTP verification systems.
+
+Based on these insights, this solution integrates Twilio's Messaging API and Firebase Firestore to build a secure, context-aware OTP validation system. In addition to sending OTPs via SMS and verifying them before sensitive actions (such as payments), the system is designed with a framework that can be extended to include anomaly detection based on user location and behavioral patterns. This makes it more resilient to phishing attacks, unauthorized transactions, and other common fraud techniques.
 
 ![Report Image](https://github.com/adiityack/otp_based_fraud_prevention_secure/blob/master/working.png)
 
 ![Report Image](https://github.com/adiityack/otp_based_fraud_prevention_secure/blob/master/report.png)
 
-## Available Scripts
+While working on a broader study of digital fraud in India, I decided to go beyond surface-level data and typical narratives. OTP-based scams were being widely reported, but most discussions focused on urban users and generic solutions like two-factor authentication or awareness messages. I wanted to understand how frauds were happening in remote or rural areas—regions where users are digitally vulnerable but often ignored by fintech security systems.
 
-In the project directory, you can run:
+### Research Focus and Motivation
 
-### `npm start`
+My core question was:  
+**How are fraudsters able to consistently succeed with OTP-based scams even in areas with limited internet access, low digital literacy, or poor infrastructure like forests, rural zones, or desert regions?**
 
-Runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This led me into some surprising and overlooked areas.
 
-The page will reload if you make edits. You will also see any lint errors in the console.
+### Deep Dive into Fraud Operations
 
-### `node server.js`
+Through analyzing regional cybercrime data and following dozens of case studies from police reports in states like Jharkhand, Rajasthan, and Chhattisgarh, I found a consistent pattern:  
+Many fraudsters operate from remote zones—forest villages, tribal belts, or semi-abandoned desert towns—where they’re less traceable, use unregistered SIM cards, and often have access to basic signal boosters.
 
-Open new terminal and run this to run the backend part of the project, but before running the project make sure you have installed all
-the dependencies by using ( npm i ) or (npm install) and also make sure you have setup firebase and Twilio before running whole project.
+They target victims not only in their own region but often simulate being from the same city or state as the victim using leaked data, regional accents, and social engineering tricks.
 
+**For instance:**
 
+- They would call a user in Pune pretending to be from a local bank branch, while actually operating from a village in Jharkhand with a temporary SIM card.  
+- They’d request a small "KYC update" and manipulate users into sharing OTPs.
 
-## Firebase Setup
+The fraud worked not because of tech failure—but because **location awareness was missing** in the fraud detection process.
 
-To set up Firebase Firestore, follow these steps:
+### Key Insight
 
-1. Go to the [Firebase Console](https://console.firebase.google.com/) and create a new project.
-2. Set up the Firestore Database in the project.
-3. Create a `firebaseConfig.js` file in your project directory and paste your Firebase configuration:
+Most fintech platforms verify OTPs and transactions without deeply validating **where the request is coming from** or **how it deviates from a user's usual behavior**. This was the blind spot I decided to focus on.
 
-   ```js
-   import firebase from 'firebase/app';
-   import 'firebase/firestore';
+### My Solution: Location-Based Anomaly Detection for OTP Systems
 
-   const firebaseConfig = {
-     apiKey: "YOUR_API_KEY",
-     authDomain: "YOUR_AUTH_DOMAIN",
-     projectId: "YOUR_PROJECT_ID",
-     storageBucket: "YOUR_STORAGE_BUCKET",
-     messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-     appId: "YOUR_APP_ID"
-   };
+I proposed a concept that adds a **location intelligence layer** to OTP verification systems:
 
-   firebase.initializeApp(firebaseConfig);
-   const db = firebase.firestore();
+- If a user typically logs in from Delhi, but suddenly an OTP request comes from a remote forest region in Jharkhand or a desert town in Barmer, the system detects this mismatch.  
+- The device's GPS, IP location, and network data are compared against historical usage.  
+- If there's a high deviation with no prior travel context, the app can flag, delay, or require additional user confirmation before proceeding.
 
-   export default db;
-   ```
+This approach doesn’t disrupt the user but silently adds a layer of intelligence and safety, especially for digitally vulnerable populations.
 
-## Twilio Setup
+### Practicality Over Perfection
 
-1. Sign up for a [Twilio account](https://www.twilio.com/).
-2. Create a new project, and get your credentials: `Account SID`, `Auth Token`, and `Twilio Phone Number`.
-3. Add them to a `.env` file in your root directory:
+I didn’t build a full-fledged product, but I created a working proof-of-concept and documented the system architecture. It was minimal, but it demonstrated a **research-first, problem-centric mindset**—one that prioritizes real problems affecting real users, especially those outside the tech bubble.
 
-   ```bash
-   TWILIO_ACCOUNT_SID=your_account_sid
-   TWILIO_AUTH_TOKEN=your_auth_token
-   TWILIO_PHONE_NUMBER=your_twilio_phone_number
-   PORT=8000
-   ```
-
-## Running the Backend
-
-To start the backend server, run:
-
-### `node server.js`
-
-Runs the backend server on [http://localhost:8000](http://localhost:8000). Ensure your `.env` file is set up correctly with the Twilio credentials.
-
-## Sending OTP via Twilio
-
-In `PaymentForm.js`, replace the placeholder phone number with your target number to send OTP messages:
-
-```js
-const sendMessage = async (message) => {
-  try {
-    const otp = generateOTP();
-    message = message + "****** LINK";
-    const response = await axios.post('http://localhost:8000/send-message', {
-      phoneNumber: '+91YOUR_PHONE_NUMBER',
-      message,
-    });
-    handleStoreOtp(otp);
-    navigate('/pin', { state: { otp } });
-  } catch (error) {
-    if (error.response) {
-      console.error('Error sending message:', error.response.data);
-      alert(`Failed to send message: ${error.response.data.error}`);
-    } else {
-      console.error('Error sending message:', error.message);
-      alert('Failed to send message. Please try again.');
-    }
-  }
-};
-```
-
-Ensure your Twilio account has sufficient credits to send SMS.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Demo Video
-
-Check out the project in action here: [Demo Video Link](https://placeholder.com/video-link)
-
----
-
-Let me know if any more updates are needed for the `README.md`.
+This experience also helped me win a **theme-based hackathon organized by Q2 Software**, one of the largest global fintech companies. My research stood out because it focused on **people, places, and patterns** that are usually ignored in mainstream product design.
